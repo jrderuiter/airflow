@@ -145,6 +145,7 @@ class DatasetManager(LoggingMixin):
         session.flush()
 
         cls.notify_dataset_changed(dataset=dataset)
+        cls.notify_dataset_changed(dataset=dataset)
 
         Stats.incr("dataset.updates")
 
@@ -161,6 +162,11 @@ class DatasetManager(LoggingMixin):
     def notify_dataset_changed(cls, dataset: Dataset):
         """Run applicable notification actions when a dataset is changed."""
         get_listener_manager().hook.on_dataset_changed(dataset=dataset)
+
+    @classmethod
+    def notify_dataset_event_created(cls, event: DatasetEvent):
+        """Run applicable notification actions when a dataset is changed."""
+        get_listener_manager().hook.on_dataset_event_created(event=event)
 
     @classmethod
     def _queue_dagruns(cls, dataset_id: int, dags_to_queue: set[DagModel], session: Session) -> None:

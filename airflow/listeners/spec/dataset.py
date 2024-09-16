@@ -22,7 +22,7 @@ from typing import TYPE_CHECKING
 from pluggy import HookspecMarker
 
 if TYPE_CHECKING:
-    from airflow.datasets import Dataset
+    from airflow.datasets import Dataset, DatasetEvent
 
 hookspec = HookspecMarker("airflow")
 
@@ -36,6 +36,13 @@ def on_dataset_created(
 
 @hookspec
 def on_dataset_changed(
-    dataset: Dataset,
+    dataset: Dataset
 ):
     """Execute when dataset change is registered."""
+
+
+@hookspec
+def on_dataset_event_created(
+    event: DatasetEvent,
+):
+    """Execute when a dataset event is created."""
